@@ -34,11 +34,23 @@ module.exports = class BinarySearchTree {
     this.roots = insertNode(this.roots, data);
   }
 
-  has(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
+  has(data) {
+    function searchNode(node, newNode) {
+      if (node === null) {
+        return false;
+      }
+      if (node.data === newNode) {
+        return true;
+      }
+      if (newNode < node.data) {
+        return searchNode(node.left, newNode);
+      } else {
+        return searchNode(node.right, newNode);
+      }
+    }
 
+    return searchNode(this.roots, data);
+  }
   find(/* data */) {
     throw new NotImplementedError('Not implemented');
     // remove line with error and write your code here
