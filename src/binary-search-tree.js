@@ -16,6 +16,8 @@ module.exports = class BinarySearchTree {
   }
 
   add(data) {
+    this.roots = insertNode(this.roots, data);
+
     function insertNode(node, newData) {
       if (node === null) {
         return new Node(newData);
@@ -30,8 +32,6 @@ module.exports = class BinarySearchTree {
       }
       return node;
     }
-
-    this.roots = insertNode(this.roots, data);
   }
 
   has(data) {
@@ -70,9 +70,42 @@ module.exports = class BinarySearchTree {
     return findNode(this.roots, data);
   }
 
-  remove(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  remove(data) {
+    this.root = removeNode(this.roots, data);
+
+    function removeNode(node, newNode) {
+      if (node === null) {
+        return null;
+      }
+      if (newNode < node.data) {
+        node.left = removeNode(node.left, data);
+        return node;
+      } else if (node.data < newNode) {
+        node.right = removeNode(node.right, data);
+        return node;
+      } else {
+        if (node.left === null && node.right === null) {
+          return null;
+        }
+        if (!node.left) {
+          node = node.right;
+          return node;
+        }
+        if (!node.right) {
+          node = node.left;
+          return node;
+        }
+
+        let min = node.right;
+        while (min.left) {
+          min = min.left;
+        }
+
+        node.data = min.data;
+        node.right = removeNode(node.right, min.data);
+        return node;
+      }
+    }
   }
 
   min() {
